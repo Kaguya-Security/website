@@ -1,5 +1,83 @@
-// Navigation functionality
+// Enhanced Functionality
 document.addEventListener('DOMContentLoaded', function() {
+    const scrollToTopBtn = document.getElementById('scrollToTop');
+
+    // Scroll to Top Button
+    function toggleScrollToTop() {
+        if (window.pageYOffset > 300) {
+            scrollToTopBtn.classList.add('visible');
+        } else {
+            scrollToTopBtn.classList.remove('visible');
+        }
+    }
+
+    // Scroll to top functionality
+    scrollToTopBtn.addEventListener('click', function() {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    });
+
+    // Show/hide scroll to top button on scroll
+    window.addEventListener('scroll', toggleScrollToTop);
+
+    // Intersection Observer for animations (trigger earlier and faster)
+    const observerOptions = {
+        threshold: 0.05, // Reduced from 0.1 to trigger earlier
+        rootMargin: '0px 0px 100px 0px' // Changed to positive margin to trigger 100px before element enters viewport
+    };
+
+    const observer = new IntersectionObserver(function(entries) {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.style.animationDelay = entry.target.dataset.delay || '0ms';
+                entry.target.classList.add('animate-in');
+            }
+        });
+    }, observerOptions);
+
+    // Observe all cards and sections for animations
+    const animateElements = document.querySelectorAll('.service-card, .why-card, .pricing-card, .section-header');
+    animateElements.forEach((el, index) => {
+        el.dataset.delay = `${index * 50}ms`; // Reduced delay from 100ms to 50ms
+        el.style.opacity = '0';
+        el.style.transform = 'translateY(20px)'; // Reduced from 30px to 20px for subtler effect
+        observer.observe(el);
+    });
+
+    // Add animation class with faster timing
+    const style = document.createElement('style');
+    style.textContent = `
+        .animate-in {
+            animation: fadeInUp 0.4s ease-out forwards; /* Reduced from 0.6s to 0.4s */
+        }
+    `;
+    document.head.appendChild(style);
+
+    // Enhanced navbar scroll effect
+    let lastScroll = 0;
+    const navbar = document.querySelector('.navbar');
+
+    window.addEventListener('scroll', function() {
+        const currentScroll = window.pageYOffset;
+        
+        if (currentScroll <= 0) {
+            navbar.style.transform = 'translateY(0)';
+            navbar.style.boxShadow = 'none';
+        } else if (currentScroll > lastScroll && currentScroll > 100) {
+            // Scrolling down
+            navbar.style.transform = 'translateY(-100%)';
+        } else {
+            // Scrolling up
+            navbar.style.transform = 'translateY(0)';
+            navbar.style.boxShadow = '0 2px 20px rgba(0, 0, 0, 0.1)';
+        }
+        
+        lastScroll = currentScroll;
+    });
+
+    // Navigation functionality
     const hamburger = document.querySelector('.hamburger');
     const navMenu = document.querySelector('.nav-menu');
     const navLinks = document.querySelectorAll('.nav-link');
@@ -70,26 +148,6 @@ document.addEventListener('DOMContentLoaded', function() {
             navbar.style.background = 'rgba(10, 10, 10, 0.95)';
             navbar.style.boxShadow = 'none';
         }
-    });
-
-    // Intersection Observer for animations
-    const observerOptions = {
-        threshold: 0.1,
-        rootMargin: '0px 0px -100px 0px'
-    };
-
-    const observer = new IntersectionObserver(function(entries) {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('fade-in-up');
-            }
-        });
-    }, observerOptions);
-
-    // Observe elements for animation
-    const animateElements = document.querySelectorAll('.why-card, .service-card, .pricing-card, .contact-method, .benefit-item, .waitlist-form');
-    animateElements.forEach(el => {
-        observer.observe(el);
     });
 
     // Contact form handling
@@ -305,49 +363,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Scroll to top functionality
-    const scrollToTopBtn = document.createElement('button');
-    scrollToTopBtn.innerHTML = '<i class="fas fa-chevron-up"></i>';
-    scrollToTopBtn.className = 'scroll-to-top';
-    scrollToTopBtn.style.cssText = `
-        position: fixed;
-        bottom: 30px;
-        right: 30px;
-        width: 50px;
-        height: 50px;
-        background: linear-gradient(135deg, #00d4ff 0%, #0099cc 100%);
-        color: white;
-        border: none;
-        border-radius: 50%;
-        cursor: pointer;
-        opacity: 0;
-        visibility: hidden;
-        transition: all 0.3s ease;
-        z-index: 1000;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-    `;
-
-    document.body.appendChild(scrollToTopBtn);
-
-    // Show/hide scroll to top button
-    window.addEventListener('scroll', function() {
-        if (window.pageYOffset > 300) {
-            scrollToTopBtn.style.opacity = '1';
-            scrollToTopBtn.style.visibility = 'visible';
-        } else {
-            scrollToTopBtn.style.opacity = '0';
-            scrollToTopBtn.style.visibility = 'hidden';
-        }
-    });
-
-    // Scroll to top functionality
-    scrollToTopBtn.addEventListener('click', function() {
-        window.scrollTo({
-            top: 0,
-            behavior: 'smooth'
-        });
-    });
-
     // Removed parallax effect to fix section overlap
 
     // Loading animation for page elements
@@ -367,30 +382,8 @@ document.addEventListener('DOMContentLoaded', function() {
     window.addEventListener('scroll', animateOnScroll);
     animateOnScroll(); // Run on page load
 
-    // Typewriter effect for hero title
-    function typeWriter(element, text, speed = 100) {
-        let i = 0;
-        element.innerHTML = '';
-        
-        function type() {
-            if (i < text.length) {
-                element.innerHTML += text.charAt(i);
-                i++;
-                setTimeout(type, speed);
-            }
-        }
-        
-        type();
-    }
-
-    // Initialize typewriter effect
-    const heroTitle = document.querySelector('.hero-title');
-    if (heroTitle) {
-        const originalText = heroTitle.innerHTML;
-        setTimeout(() => {
-            typeWriter(heroTitle, originalText.replace(/<[^>]*>/g, ''), 50);
-        }, 500);
-    }
+    // Typewriter effect disabled for hero title to preserve HTML structure
+    // The hero title now uses CSS animations instead for better visual separation
 
     // Statistics counter animation
     function animateCounter(element, target, duration = 2000) {
