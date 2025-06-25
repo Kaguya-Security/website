@@ -38,7 +38,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }, observerOptions);
 
     // Observe all cards and sections for animations
-    const animateElements = document.querySelectorAll('.service-card, .why-card, .pricing-card, .section-header');
+    const animateElements = document.querySelectorAll('.service-card, .why-card, .pricing-card, .section-header, .testimonial-card, .tip-card, .team-member, .stat-card');
     animateElements.forEach((el, index) => {
         el.dataset.delay = `${index * 50}ms`; // Reduced delay from 100ms to 50ms
         el.style.opacity = '0';
@@ -259,179 +259,41 @@ document.addEventListener('DOMContentLoaded', function() {
         }, 5000);
     }
 
-    // Email validation function
-    function isValidEmail(email) {
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        return emailRegex.test(email);
-    }
-
-    // Notification system
-    function showNotification(message, type = 'info') {
-        // Remove existing notification
-        const existingNotification = document.querySelector('.notification');
-        if (existingNotification) {
-            existingNotification.remove();
+    // Enhanced hover effects for new sections
+    const tipCards = document.querySelectorAll('.tip-card');
+    tipCards.forEach(card => {
+        const tipLink = card.querySelector('.tip-link');
+        if (tipLink) {
+            card.addEventListener('mouseenter', () => {
+                tipLink.style.transform = 'translateX(5px)';
+            });
+            
+            card.addEventListener('mouseleave', () => {
+                tipLink.style.transform = 'translateX(0)';
+            });
         }
+    });
 
-        // Create notification element
-        const notification = document.createElement('div');
-        notification.className = `notification notification-${type}`;
-        notification.innerHTML = `
-            <div class="notification-content">
-                <span class="notification-message">${message}</span>
-                <button class="notification-close">&times;</button>
-            </div>
-        `;
-
-        // Add styles
-        notification.style.cssText = `
-            position: fixed;
-            top: 90px;
-            right: 20px;
-            background: ${type === 'success' ? '#10B981' : type === 'error' ? '#EF4444' : '#3B82F6'};
-            color: white;
-            padding: 15px 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-            z-index: 10000;
-            max-width: 400px;
-            animation: slideInRight 0.3s ease-out;
-        `;
-
-        // Add animation keyframes
-        if (!document.querySelector('#notification-styles')) {
-            const style = document.createElement('style');
-            style.id = 'notification-styles';
-            style.textContent = `
-                @keyframes slideInRight {
-                    from {
-                        transform: translateX(100%);
-                        opacity: 0;
-                    }
-                    to {
-                        transform: translateX(0);
-                        opacity: 1;
-                    }
-                }
-                .notification-content {
-                    display: flex;
-                    justify-content: space-between;
-                    align-items: center;
-                }
-                .notification-close {
-                    background: none;
-                    border: none;
-                    color: white;
-                    font-size: 20px;
-                    cursor: pointer;
-                    margin-left: 15px;
-                    padding: 0;
-                }
-            `;
-            document.head.appendChild(style);
-        }
-
-        document.body.appendChild(notification);
-
-        // Close button functionality
-        const closeBtn = notification.querySelector('.notification-close');
-        closeBtn.addEventListener('click', function() {
-            notification.remove();
-        });
-
-        // Auto remove after 5 seconds
-        setTimeout(() => {
-            if (notification.parentNode) {
-                notification.remove();
-            }
-        }, 5000);
-    }
-
-    // Pricing card hover effects
-    const pricingCards = document.querySelectorAll('.pricing-card');
-    pricingCards.forEach(card => {
-        card.addEventListener('mouseenter', function() {
-            if (!this.classList.contains('pricing-popular')) {
-                this.style.transform = 'translateY(-10px) scale(1.02)';
-            }
-        });
-
-        card.addEventListener('mouseleave', function() {
-            if (!this.classList.contains('pricing-popular')) {
-                this.style.transform = 'translateY(0) scale(1)';
-            }
+    // Smooth scroll for tip links (placeholder functionality)
+    const tipLinks = document.querySelectorAll('.tip-link');
+    tipLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            showNotification('Blog posts coming soon! Stay tuned for detailed security guides.', 'info');
         });
     });
 
-    // Removed parallax effect to fix section overlap
-
-    // Loading animation for page elements
-    function animateOnScroll() {
-        const elements = document.querySelectorAll('.why-card, .service-card, .pricing-card');
+    // Team member card interactions
+    const teamMembers = document.querySelectorAll('.team-member');
+    teamMembers.forEach(member => {
+        member.addEventListener('mouseenter', () => {
+            const photo = member.querySelector('.member-photo');
+            photo.style.transform = 'scale(1.1) rotate(5deg)';
+        });
         
-        elements.forEach(element => {
-            const elementTop = element.getBoundingClientRect().top;
-            const elementVisible = 150;
-            
-            if (elementTop < window.innerHeight - elementVisible) {
-                element.classList.add('fade-in-up');
-            }
-        });
-    }
-
-    window.addEventListener('scroll', animateOnScroll);
-    animateOnScroll(); // Run on page load
-
-    // Typewriter effect disabled for hero title to preserve HTML structure
-    // The hero title now uses CSS animations instead for better visual separation
-
-    // Statistics counter animation
-    function animateCounter(element, target, duration = 2000) {
-        let start = 0;
-        const range = target - start;
-        const increment = target > start ? 1 : -1;
-        const stepTime = Math.abs(Math.floor(duration / range));
-        
-        const timer = setInterval(() => {
-            start += increment;
-            element.textContent = start;
-            
-            if (start === target) {
-                clearInterval(timer);
-            }
-        }, stepTime);
-    }
-
-    // Lazy loading for images
-    const images = document.querySelectorAll('img[data-src]');
-    const imageObserver = new IntersectionObserver((entries, observer) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                const img = entry.target;
-                img.src = img.dataset.src;
-                img.classList.remove('lazy');
-                imageObserver.unobserve(img);
-            }
-        });
-    });
-
-    images.forEach(img => imageObserver.observe(img));
-
-    // Service card interactive effects
-    const serviceCards = document.querySelectorAll('.service-card');
-    serviceCards.forEach(card => {
-        card.addEventListener('mouseenter', function() {
-            const icon = this.querySelector('.service-icon');
-            if (icon) {
-                icon.style.transform = 'scale(1.1) rotate(5deg)';
-            }
-        });
-
-        card.addEventListener('mouseleave', function() {
-            const icon = this.querySelector('.service-icon');
-            if (icon) {
-                icon.style.transform = 'scale(1) rotate(0deg)';
-            }
+        member.addEventListener('mouseleave', () => {
+            const photo = member.querySelector('.member-photo');
+            photo.style.transform = 'scale(1) rotate(0deg)';
         });
     });
 
