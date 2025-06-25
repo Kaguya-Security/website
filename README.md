@@ -17,7 +17,7 @@ Kaguya Security provides specialized cybersecurity solutions to protect content 
 
 ## 🚀 Live Demo
 
-Visit the live website: [https://yourusername.github.io/CybersecurityWebsite](https://yourusername.github.io/CybersecurityWebsite)
+Visit the live website: [https://www.kaguyasecurity.com](https://www.kaguyasecurity.com)
 
 ## 📁 Project Structure
 
