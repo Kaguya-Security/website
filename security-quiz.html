@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Primary Meta Tags -->
+    <title>Security Assessment Quiz - Kaguya Security</title>
+    <meta name="title" content="Security Assessment Quiz - Kaguya Security">
+    <meta name="description" content="Take our free security assessment to discover vulnerabilities in your digital presence and get personalized recommendations to protect your creator brand.">
+    <meta name="keywords" content="security assessment, cybersecurity quiz, content creator security, digital security evaluation">
+    <meta name="robots" content="index, follow">
+    <meta name="language" content="English">
+    <meta name="author" content="Kaguya Security">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://kaguyasecurity.com/security-quiz.html">
+    <meta property="og:title" content="Free Security Assessment Quiz - Kaguya Security">
+    <meta property="og:description" content="Discover your security vulnerabilities and get personalized recommendations to protect your creator brand.">
+    <meta property="og:image" content="https://kaguyasecurity.com/assets/quiz-og-image.jpg">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link rel="manifest" href="site.webmanifest">
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="quiz-page">
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <a href="index.html" class="logo-link">
+                    <div class="logo-container">
+                        <div class="logo-shield">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <span>Kaguya Security</span>
+                    </div>
+                </a>
+            </div>
+            <div class="quiz-nav-actions">
+                <a href="index.html" class="btn btn-secondary">Back to Main Site</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Quiz Container -->
+    <div class="quiz-container">
+        <!-- Quiz Start Screen -->
+        <div id="quiz-start" class="quiz-screen active">
+            <div class="quiz-intro">
+                <div class="quiz-logo">
+                    <i class="fas fa-shield-check"></i>
+                </div>
+                <h1>Creator Security Assessment</h1>
+                <p class="quiz-subtitle">Discover your security vulnerabilities and get personalized recommendations to protect your brand</p>
+                
+                <div class="quiz-stats">
+                    <div class="stat-item">
+                        <span class="stat-number">15</span>
+                        <span class="stat-label">Questions</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">3-5</span>
+                        <span class="stat-label">Minutes</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">100%</span>
+                        <span class="stat-label">Free</span>
+                    </div>
+                </div>
+
+                <div class="quiz-benefits">
+                    <h3>What You'll Get:</h3>
+                    <ul>
+                        <li><i class="fas fa-check"></i> Personalized security score (0-100)</li>
+                        <li><i class="fas fa-check"></i> Detailed vulnerability assessment</li>
+                        <li><i class="fas fa-check"></i> Custom improvement recommendations</li>
+                        <li><i class="fas fa-check"></i> Tailored protection plan suggestions</li>
+                    </ul>
+                </div>
+
+                <button id="start-quiz" class="btn btn-primary quiz-start-btn">
+                    <i class="fas fa-play"></i>
+                    Start Security Assessment
+                </button>
+                
+                <p class="quiz-privacy">No email required • Your answers are private • Results generated instantly</p>
+            </div>
+        </div>
+
+        <!-- Quiz Questions Screen -->
+        <div id="quiz-questions" class="quiz-screen">
+            <div class="quiz-header">
+                <div class="quiz-progress">
+                    <div class="progress-bar">
+                        <div id="progress-fill" class="progress-fill"></div>
+                    </div>
+                    <span id="progress-text">Question 1 of 15</span>
+                </div>
+                <button id="quiz-exit" class="quiz-exit-btn" title="Exit Quiz">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <div class="quiz-content">
+                <div id="question-container" class="question-container">
+                    <!-- Questions will be dynamically loaded here -->
+                </div>
+                
+                <div class="quiz-navigation">
+                    <button id="prev-btn" class="btn btn-secondary" disabled>
+                        <i class="fas fa-arrow-left"></i>
+                        Previous
+                    </button>
+                    <button id="next-btn" class="btn btn-primary" disabled>
+                        Next
+                        <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quiz Results Screen -->
+        <div id="quiz-results" class="quiz-screen">
+            <div class="results-container">
+                <div class="results-header">
+                    <div class="score-circle">
+                        <div class="score-inner">
+                            <span id="final-score">0</span>
+                            <span class="score-label">/ 100</span>
+                        </div>
+                    </div>
+                    <h2 id="security-level">Your Security Level</h2>
+                    <p id="security-description">Assessment complete</p>
+                </div>
+
+                <div class="results-breakdown">
+                    <h3>Security Assessment Breakdown</h3>
+                    <div id="category-scores" class="category-scores">
+                        <!-- Category scores will be populated here -->
+                    </div>
+                </div>
+
+                <div class="recommendations">
+                    <h3>Your Personalized Recommendations</h3>
+                    <div id="recommendation-list" class="recommendation-list">
+                        <!-- Recommendations will be populated here -->
+                    </div>
+                </div>
+
+                <div class="suggested-plan">
+                    <h3>Recommended Protection Plan</h3>
+                    <div id="plan-suggestion" class="plan-card">
+                        <!-- Plan suggestion will be populated here -->
+                    </div>
+                </div>
+
+                <div class="results-actions">
+                    <a href="index.html#waitlist" class="btn btn-primary">Join Waitlist</a>
+                    <button id="retake-quiz" class="btn btn-secondary">Retake Assessment</button>
+                    <button id="share-results" class="btn btn-outline">Share Results</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="quiz.js"></script>
+</body>
+</html>
