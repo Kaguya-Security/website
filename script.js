@@ -19,13 +19,13 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Show/hide scroll to top button on scroll
-    window.addEventListener('scroll', toggleScrollToTop);
+    // Remove the old scroll listener call
+    // window.addEventListener('scroll', toggleScrollToTop); // This is now handled in consolidated scroll handler
 
-    // Intersection Observer for animations (trigger earlier and faster)
+    // Consolidated scroll handler for better performance
     const observerOptions = {
-        threshold: 0.05, // Reduced from 0.1 to trigger earlier
-        rootMargin: '0px 0px 100px 0px' // Changed to positive margin to trigger 100px before element enters viewport
+        threshold: 0.02, // Reduced further to trigger very early
+        rootMargin: '0px 0px 150px 0px' // Increased to trigger even earlier
     };
 
     const observer = new IntersectionObserver(function(entries) {
@@ -33,16 +33,21 @@ document.addEventListener('DOMContentLoaded', function() {
             if (entry.isIntersecting) {
                 entry.target.style.animationDelay = entry.target.dataset.delay || '0ms';
                 entry.target.classList.add('animate-in');
+                
+                // Clean up will-change after animation
+                setTimeout(() => {
+                    entry.target.classList.add('animated');
+                }, 350 + parseInt(entry.target.dataset.delay || '0'));
             }
         });
     }, observerOptions);
 
-    // Observe all cards and sections for animations
-    const animateElements = document.querySelectorAll('.service-card, .why-card, .pricing-card, .section-header, .testimonial-card, .tip-card, .team-member, .stat-card');
+    // Observe all cards and sections for animations - comprehensive list
+    const animateElements = document.querySelectorAll('.service-card, .why-card, .pricing-card, .section-header, .testimonial-card, .tip-card, .team-member, .stat-card, .assessment-card, .waitlist-form, .contact-form, .benefit-item, .company-stats, .testimonials-stats');
     animateElements.forEach((el, index) => {
-        el.dataset.delay = `${index * 50}ms`; // Reduced delay from 100ms to 50ms
+        el.dataset.delay = `${index * 30}ms`; // Reduced delay from 50ms to 30ms for faster staggered animation
         el.style.opacity = '0';
-        el.style.transform = 'translateY(20px)'; // Reduced from 30px to 20px for subtler effect
+        el.style.transform = 'translateY(15px)'; // Reduced from 20px to 15px for more subtle effect
         observer.observe(el);
     });
 
@@ -50,20 +55,31 @@ document.addEventListener('DOMContentLoaded', function() {
     const style = document.createElement('style');
     style.textContent = `
         .animate-in {
-            animation: fadeInUp 0.4s ease-out forwards; /* Reduced from 0.6s to 0.4s */
+            animation: fadeInUp 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards; /* Smoother easing */
         }
     `;
     document.head.appendChild(style);
 
-    // Enhanced navbar scroll effect
+    // Consolidated scroll handler for better performance
     let lastScroll = 0;
+    let scrollTicking = false;
     const navbar = document.querySelector('.navbar');
+    const navLinks = document.querySelectorAll('.nav-link');
 
-    window.addEventListener('scroll', function() {
+    function handleScroll() {
         const currentScroll = window.pageYOffset;
         
+        // Scroll to top button
+        if (currentScroll > 300) {
+            scrollToTopBtn.classList.add('visible');
+        } else {
+            scrollToTopBtn.classList.remove('visible');
+        }
+        
+        // Enhanced navbar scroll effect
         if (currentScroll <= 0) {
             navbar.style.transform = 'translateY(0)';
+            navbar.style.background = 'rgba(10, 10, 10, 0.95)';
             navbar.style.boxShadow = 'none';
         } else if (currentScroll > lastScroll && currentScroll > 100) {
             // Scrolling down
@@ -71,16 +87,46 @@ document.addEventListener('DOMContentLoaded', function() {
         } else {
             // Scrolling up
             navbar.style.transform = 'translateY(0)';
-            navbar.style.boxShadow = '0 2px 20px rgba(0, 0, 0, 0.1)';
+            navbar.style.background = 'rgba(10, 10, 10, 0.98)';
+            navbar.style.boxShadow = '0 2px 20px rgba(0, 0, 0, 0.3)';
         }
         
+        // Active navigation link highlighting
+        let current = '';
+        const sections = document.querySelectorAll('section');
+        
+        sections.forEach(section => {
+            const sectionTop = section.getBoundingClientRect().top;
+            const sectionHeight = section.clientHeight;
+            
+            if (sectionTop <= 100 && sectionTop + sectionHeight > 100) {
+                current = section.getAttribute('id');
+            }
+        });
+
+        navLinks.forEach(link => {
+            link.classList.remove('active');
+            if (link.getAttribute('href') === `#${current}`) {
+                link.classList.add('active');
+            }
+        });
+        
         lastScroll = currentScroll;
-    });
+        scrollTicking = false;
+    }
+
+    // Optimized scroll event listener with requestAnimationFrame
+    window.addEventListener('scroll', function() {
+        if (!scrollTicking) {
+            requestAnimationFrame(handleScroll);
+            scrollTicking = true;
+        }
+    }, { passive: true });
 
     // Navigation functionality
     const hamburger = document.querySelector('.hamburger');
     const navMenu = document.querySelector('.nav-menu');
-    const navLinks = document.querySelectorAll('.nav-link');
+    // navLinks is already declared in the consolidated scroll handler
 
     // Mobile menu toggle
     hamburger.addEventListener('click', function() {
@@ -114,40 +160,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 });
             }
         });
-    });
-
-    // Active navigation link highlighting
-    window.addEventListener('scroll', function() {
-        let current = '';
-        const sections = document.querySelectorAll('section');
-        
-        sections.forEach(section => {
-            const sectionTop = section.getBoundingClientRect().top;
-            const sectionHeight = section.clientHeight;
-            
-            if (sectionTop <= 100 && sectionTop + sectionHeight > 100) {
-                current = section.getAttribute('id');
-            }
-        });
-
-        navLinks.forEach(link => {
-            link.classList.remove('active');
-            if (link.getAttribute('href') === `#${current}`) {
-                link.classList.add('active');
-            }
-        });
-    });
-
-    // Navbar background on scroll
-    window.addEventListener('scroll', function() {
-        const navbar = document.querySelector('.navbar');
-        if (window.scrollY > 50) {
-            navbar.style.background = 'rgba(10, 10, 10, 0.98)';
-            navbar.style.boxShadow = '0 2px 20px rgba(0, 0, 0, 0.3)';
-        } else {
-            navbar.style.background = 'rgba(10, 10, 10, 0.95)';
-            navbar.style.boxShadow = 'none';
-        }
     });
 
     // Contact form handling
