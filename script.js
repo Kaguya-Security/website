@@ -1,3 +1,132 @@
+// Utility Functions
+function isValidEmail(email) {
+    // RFC 5322 compliant email validation regex
+    const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
+    return emailRegex.test(email.trim());
+}
+
+function showNotification(message, type = 'info') {
+    // Create notification element
+    const notification = document.createElement('div');
+    notification.className = `notification notification-${type}`;
+    notification.innerHTML = `
+        <div class="notification-content">
+            <span class="notification-message">${message}</span>
+            <button class="notification-close" aria-label="Close notification">&times;</button>
+        </div>
+    `;
+    
+    // Add styles if they don't exist
+    if (!document.querySelector('#notification-styles')) {
+        const styles = document.createElement('style');
+        styles.id = 'notification-styles';
+        styles.textContent = `
+            .notification {
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                min-width: 300px;
+                max-width: 500px;
+                padding: 16px;
+                border-radius: 8px;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+                z-index: 10000;
+                font-family: inherit;
+                font-size: 14px;
+                line-height: 1.4;
+                opacity: 0;
+                transform: translateX(100%);
+                transition: all 0.3s ease;
+            }
+            
+            .notification.show {
+                opacity: 1;
+                transform: translateX(0);
+            }
+            
+            .notification-success {
+                background: #10b981;
+                color: white;
+                border: 1px solid #059669;
+            }
+            
+            .notification-error {
+                background: #ef4444;
+                color: white;
+                border: 1px solid #dc2626;
+            }
+            
+            .notification-info {
+                background: #3b82f6;
+                color: white;
+                border: 1px solid #2563eb;
+            }
+            
+            .notification-content {
+                display: flex;
+                align-items: flex-start;
+                justify-content: space-between;
+                gap: 12px;
+            }
+            
+            .notification-message {
+                flex: 1;
+            }
+            
+            .notification-close {
+                background: none;
+                border: none;
+                color: inherit;
+                font-size: 18px;
+                font-weight: bold;
+                cursor: pointer;
+                padding: 0;
+                width: 20px;
+                height: 20px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                opacity: 0.8;
+                transition: opacity 0.2s ease;
+            }
+            
+            .notification-close:hover {
+                opacity: 1;
+            }
+        `;
+        document.head.appendChild(styles);
+    }
+    
+    // Add to page
+    document.body.appendChild(notification);
+    
+    // Show with animation
+    requestAnimationFrame(() => {
+        notification.classList.add('show');
+    });
+    
+    // Auto-remove after 5 seconds
+    const autoRemove = setTimeout(() => {
+        removeNotification(notification);
+    }, 5000);
+    
+    // Add close button functionality
+    const closeBtn = notification.querySelector('.notification-close');
+    closeBtn.addEventListener('click', () => {
+        clearTimeout(autoRemove);
+        removeNotification(notification);
+    });
+    
+    function removeNotification(element) {
+        element.classList.remove('show');
+        setTimeout(() => {
+            if (element.parentNode) {
+                element.parentNode.removeChild(element);
+            }
+        }, 300);
+    }
+}
+
 // Enhanced Functionality
 document.addEventListener('DOMContentLoaded', function() {
     const scrollToTopBtn = document.getElementById('scrollToTop');
