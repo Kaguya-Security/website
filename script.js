@@ -1,5 +1,5 @@
 // Enhanced Functionality
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     // Utility functions - defined first
     function isValidEmail(email) {
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -120,7 +120,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Scroll to top functionality
-    scrollToTopBtn.addEventListener('click', function() {
+    scrollToTopBtn.addEventListener('click', function () {
         window.scrollTo({
             top: 0,
             behavior: 'smooth'
@@ -136,12 +136,12 @@ document.addEventListener('DOMContentLoaded', function() {
         rootMargin: '0px 0px 150px 0px' // Increased to trigger even earlier
     };
 
-    const observer = new IntersectionObserver(function(entries) {
+    const observer = new IntersectionObserver(function (entries) {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 entry.target.style.animationDelay = entry.target.dataset.delay || '0ms';
                 entry.target.classList.add('animate-in');
-                
+
                 // Clean up will-change after animation
                 setTimeout(() => {
                     entry.target.classList.add('animated');
@@ -176,14 +176,14 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function handleScroll() {
         const currentScroll = window.pageYOffset;
-        
+
         // Scroll to top button
         if (currentScroll > 300) {
             scrollToTopBtn.classList.add('visible');
         } else {
             scrollToTopBtn.classList.remove('visible');
         }
-        
+
         // Enhanced navbar scroll effect
         if (currentScroll <= 0) {
             navbar.style.transform = 'translateY(0)';
@@ -198,15 +198,15 @@ document.addEventListener('DOMContentLoaded', function() {
             navbar.style.background = 'rgba(10, 10, 10, 0.98)';
             navbar.style.boxShadow = '0 2px 20px rgba(0, 0, 0, 0.3)';
         }
-        
+
         // Active navigation link highlighting
         let current = '';
         const sections = document.querySelectorAll('section');
-        
+
         sections.forEach(section => {
             const sectionTop = section.getBoundingClientRect().top;
             const sectionHeight = section.clientHeight;
-            
+
             if (sectionTop <= 100 && sectionTop + sectionHeight > 100) {
                 current = section.getAttribute('id');
             }
@@ -218,13 +218,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 link.classList.add('active');
             }
         });
-        
+
         lastScroll = currentScroll;
         scrollTicking = false;
     }
 
     // Optimized scroll event listener with requestAnimationFrame
-    window.addEventListener('scroll', function() {
+    window.addEventListener('scroll', function () {
         if (!scrollTicking) {
             requestAnimationFrame(handleScroll);
             scrollTicking = true;
@@ -237,14 +237,14 @@ document.addEventListener('DOMContentLoaded', function() {
     // navLinks is already declared in the consolidated scroll handler
 
     // Mobile menu toggle
-    hamburger.addEventListener('click', function() {
+    hamburger.addEventListener('click', function () {
         hamburger.classList.toggle('active');
         navMenu.classList.toggle('active');
     });
 
     // Close mobile menu when clicking on a link
     navLinks.forEach(link => {
-        link.addEventListener('click', function() {
+        link.addEventListener('click', function () {
             hamburger.classList.remove('active');
             navMenu.classList.remove('active');
         });
@@ -252,11 +252,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Smooth scrolling for navigation links
     navLinks.forEach(link => {
-        link.addEventListener('click', function(e) {
+        link.addEventListener('click', function (e) {
             e.preventDefault();
             const targetId = this.getAttribute('href');
             const targetSection = document.querySelector(targetId);
-            
+
             if (targetSection) {
                 const headerOffset = 70;
                 const elementPosition = targetSection.getBoundingClientRect().top;
@@ -273,9 +273,9 @@ document.addEventListener('DOMContentLoaded', function() {
     // Contact form handling
     const contactForm = document.getElementById('contactForm');
     if (contactForm) {
-        contactForm.addEventListener('submit', function(e) {
+        contactForm.addEventListener('submit', function (e) {
             e.preventDefault();
-            
+
             // Get form data
             const formData = new FormData(this);
             const name = formData.get('name');
@@ -303,9 +303,9 @@ document.addEventListener('DOMContentLoaded', function() {
     // Waitlist form handling
     const waitlistForm = document.getElementById('waitlistForm');
     if (waitlistForm) {
-        waitlistForm.addEventListener('submit', async function(e) {
+        waitlistForm.addEventListener('submit', async function (e) {
             e.preventDefault();
-            
+
             // Get form data
             const formData = new FormData(this);
             const name = formData.get('name');
@@ -342,7 +342,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 };
 
                 // Send data to backend API
-                const response = await fetch('http://localhost:3000/api/waitlist', {
+                const response = await fetch('https://waitlist-api.kaguyasecurity.com/api/waitlist', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -359,10 +359,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
                 // Show success message
                 showWaitlistSuccess();
-                
+
                 // Reset form
                 this.reset();
-                
+
             } catch (error) {
                 console.error('Error submitting waitlist form:', error);
                 showNotification('Sorry, there was an error joining the waitlist. Please try again later.', 'error');
@@ -378,7 +378,7 @@ document.addEventListener('DOMContentLoaded', function() {
     function showWaitlistSuccess() {
         const waitlistForm = document.querySelector('.waitlist-form');
         const originalContent = waitlistForm.innerHTML;
-        
+
         waitlistForm.innerHTML = `
             <div class="waitlist-success">
                 <i class="fas fa-check-circle"></i>
@@ -408,7 +408,7 @@ document.addEventListener('DOMContentLoaded', function() {
             card.addEventListener('mouseenter', () => {
                 tipLink.style.transform = 'translateX(5px)';
             });
-            
+
             card.addEventListener('mouseleave', () => {
                 tipLink.style.transform = 'translateX(0)';
             });
@@ -418,7 +418,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Smooth scroll for tip links (placeholder functionality)
     const tipLinks = document.querySelectorAll('.tip-link');
     tipLinks.forEach(link => {
-        link.addEventListener('click', function(e) {
+        link.addEventListener('click', function (e) {
             e.preventDefault();
             showNotification('Blog posts coming soon! Stay tuned for detailed security guides.', 'info');
         });
@@ -431,7 +431,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const photo = member.querySelector('.member-photo');
             photo.style.transform = 'scale(1.1) rotate(5deg)';
         });
-        
+
         member.addEventListener('mouseleave', () => {
             const photo = member.querySelector('.member-photo');
             photo.style.transform = 'scale(1) rotate(0deg)';
@@ -449,10 +449,10 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 // Performance optimization
-window.addEventListener('load', function() {
+window.addEventListener('load', function () {
     // Remove loading class if it exists
     document.body.classList.remove('loading');
-    
+
     // Initialize any heavy operations after page load
     setTimeout(() => {
         // Additional optimizations can go here
@@ -461,7 +461,7 @@ window.addEventListener('load', function() {
 });
 
 // Error handling
-window.addEventListener('error', function(e) {
+window.addEventListener('error', function (e) {
     console.error('An error occurred:', e.error);
 });
 
