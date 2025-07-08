@@ -1,0 +1,14 @@
+{
+    "extends": [
+        "html-validate:recommended"
+    ],
+    "rules": {
+        "void-style": "omit",
+        "no-trailing-whitespace": "error",
+        "attribute-boolean-style": "omit",
+        "doctype-style": "html5"
+    },
+    "elements": [
+        "html5"
+    ]
+}

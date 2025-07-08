@@ -1,0 +1,29 @@
+{
+    "name": "kaguya-security-website",
+    "version": "1.0.0",
+    "description": "Cybersecurity website for content creators",
+    "main": "index.html",
+    "scripts": {
+        "validate": "html-validate *.html",
+        "lighthouse": "lhci autorun",
+        "test": "npm run validate && npm run lighthouse",
+        "dev": "python -m http.server 8000",
+        "serve": "python -m http.server 8000"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/yourusername/kaguya-security-website.git"
+    },
+    "keywords": [
+        "cybersecurity",
+        "content-creators",
+        "website",
+        "security"
+    ],
+    "author": "Kaguya Security",
+    "license": "MIT",
+    "devDependencies": {
+        "html-validate": "^8.0.0",
+        "@lhci/cli": "^0.12.0"
+    }
+}
