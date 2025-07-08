@@ -128,7 +128,115 @@ function showNotification(message, type = 'info') {
 }
 
 // Enhanced Functionality
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
+    // Utility functions - defined first
+    function isValidEmail(email) {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailRegex.test(email);
+    }
+
+    function showNotification(message, type = 'info') {
+        // Remove any existing notifications
+        const existingNotification = document.querySelector('.notification');
+        if (existingNotification) {
+            existingNotification.remove();
+        }
+
+        // Create notification element
+        const notification = document.createElement('div');
+        notification.className = `notification notification-${type}`;
+        notification.innerHTML = `
+            <div class="notification-content">
+                <i class="fas ${type === 'success' ? 'fa-check-circle' : type === 'error' ? 'fa-exclamation-circle' : 'fa-info-circle'}"></i>
+                <span>${message}</span>
+                <button class="notification-close" onclick="this.parentElement.parentElement.remove()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        `;
+
+        // Add notification styles if not already present
+        if (!document.querySelector('#notification-styles')) {
+            const styles = document.createElement('style');
+            styles.id = 'notification-styles';
+            styles.innerHTML = `
+                .notification {
+                    position: fixed;
+                    top: 20px;
+                    right: 20px;
+                    z-index: 10000;
+                    min-width: 300px;
+                    max-width: 500px;
+                    background: white;
+                    border-radius: 8px;
+                    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+                    animation: slideInRight 0.3s ease-out;
+                    border-left: 4px solid #007bff;
+                }
+                .notification-success {
+                    border-left-color: #28a745;
+                }
+                .notification-error {
+                    border-left-color: #dc3545;
+                }
+                .notification-content {
+                    padding: 16px;
+                    display: flex;
+                    align-items: center;
+                    gap: 12px;
+                }
+                .notification-content i:first-child {
+                    font-size: 18px;
+                }
+                .notification-success .notification-content i:first-child {
+                    color: #28a745;
+                }
+                .notification-error .notification-content i:first-child {
+                    color: #dc3545;
+                }
+                .notification-content span {
+                    flex: 1;
+                    color: #333;
+                    font-weight: 500;
+                }
+                .notification-close {
+                    background: none;
+                    border: none;
+                    cursor: pointer;
+                    color: #666;
+                    padding: 4px;
+                    border-radius: 4px;
+                }
+                .notification-close:hover {
+                    background: #f8f9fa;
+                    color: #333;
+                }
+                @keyframes slideInRight {
+                    from {
+                        transform: translateX(100%);
+                        opacity: 0;
+                    }
+                    to {
+                        transform: translateX(0);
+                        opacity: 1;
+                    }
+                }
+            `;
+            document.head.appendChild(styles);
+        }
+
+        // Add to page
+        document.body.appendChild(notification);
+
+        // Auto-remove after 5 seconds
+        setTimeout(() => {
+            if (notification.parentElement) {
+                notification.style.animation = 'slideInRight 0.3s ease-out reverse';
+                setTimeout(() => notification.remove(), 300);
+            }
+        }, 5000);
+    }
+
     const scrollToTopBtn = document.getElementById('scrollToTop');
 
     // Scroll to Top Button
@@ -141,7 +249,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Scroll to top functionality
-    scrollToTopBtn.addEventListener('click', function() {
+    scrollToTopBtn.addEventListener('click', function () {
         window.scrollTo({
             top: 0,
             behavior: 'smooth'
@@ -157,12 +265,12 @@ document.addEventListener('DOMContentLoaded', function() {
         rootMargin: '0px 0px 150px 0px' // Increased to trigger even earlier
     };
 
-    const observer = new IntersectionObserver(function(entries) {
+    const observer = new IntersectionObserver(function (entries) {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 entry.target.style.animationDelay = entry.target.dataset.delay || '0ms';
                 entry.target.classList.add('animate-in');
-                
+
                 // Clean up will-change after animation
                 setTimeout(() => {
                     entry.target.classList.add('animated');
@@ -197,14 +305,14 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function handleScroll() {
         const currentScroll = window.pageYOffset;
-        
+
         // Scroll to top button
         if (currentScroll > 300) {
             scrollToTopBtn.classList.add('visible');
         } else {
             scrollToTopBtn.classList.remove('visible');
         }
-        
+
         // Enhanced navbar scroll effect
         if (currentScroll <= 0) {
             navbar.style.transform = 'translateY(0)';
@@ -219,15 +327,15 @@ document.addEventListener('DOMContentLoaded', function() {
             navbar.style.background = 'rgba(10, 10, 10, 0.98)';
             navbar.style.boxShadow = '0 2px 20px rgba(0, 0, 0, 0.3)';
         }
-        
+
         // Active navigation link highlighting
         let current = '';
         const sections = document.querySelectorAll('section');
-        
+
         sections.forEach(section => {
             const sectionTop = section.getBoundingClientRect().top;
             const sectionHeight = section.clientHeight;
-            
+
             if (sectionTop <= 100 && sectionTop + sectionHeight > 100) {
                 current = section.getAttribute('id');
             }
@@ -239,13 +347,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 link.classList.add('active');
             }
         });
-        
+
         lastScroll = currentScroll;
         scrollTicking = false;
     }
 
     // Optimized scroll event listener with requestAnimationFrame
-    window.addEventListener('scroll', function() {
+    window.addEventListener('scroll', function () {
         if (!scrollTicking) {
             requestAnimationFrame(handleScroll);
             scrollTicking = true;
@@ -258,14 +366,14 @@ document.addEventListener('DOMContentLoaded', function() {
     // navLinks is already declared in the consolidated scroll handler
 
     // Mobile menu toggle
-    hamburger.addEventListener('click', function() {
+    hamburger.addEventListener('click', function () {
         hamburger.classList.toggle('active');
         navMenu.classList.toggle('active');
     });
 
     // Close mobile menu when clicking on a link
     navLinks.forEach(link => {
-        link.addEventListener('click', function() {
+        link.addEventListener('click', function () {
             hamburger.classList.remove('active');
             navMenu.classList.remove('active');
         });
@@ -273,11 +381,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Smooth scrolling for navigation links
     navLinks.forEach(link => {
-        link.addEventListener('click', function(e) {
+        link.addEventListener('click', function (e) {
             e.preventDefault();
             const targetId = this.getAttribute('href');
             const targetSection = document.querySelector(targetId);
-            
+
             if (targetSection) {
                 const headerOffset = 70;
                 const elementPosition = targetSection.getBoundingClientRect().top;
@@ -294,9 +402,9 @@ document.addEventListener('DOMContentLoaded', function() {
     // Contact form handling
     const contactForm = document.getElementById('contactForm');
     if (contactForm) {
-        contactForm.addEventListener('submit', function(e) {
+        contactForm.addEventListener('submit', function (e) {
             e.preventDefault();
-            
+
             // Get form data
             const formData = new FormData(this);
             const name = formData.get('name');
@@ -324,15 +432,16 @@ document.addEventListener('DOMContentLoaded', function() {
     // Waitlist form handling
     const waitlistForm = document.getElementById('waitlistForm');
     if (waitlistForm) {
-        waitlistForm.addEventListener('submit', function(e) {
+        waitlistForm.addEventListener('submit', async function (e) {
             e.preventDefault();
-            
+
             // Get form data
             const formData = new FormData(this);
             const name = formData.get('name');
             const email = formData.get('email');
             const creatorType = formData.get('creator-type');
             const interestedPlan = formData.get('interested-plan');
+            const securityConcerns = formData.get('security-concerns');
 
             // Basic validation
             if (!name || !email || !creatorType || !interestedPlan) {
@@ -351,26 +460,46 @@ document.addEventListener('DOMContentLoaded', function() {
             submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Joining...';
             submitBtn.disabled = true;
 
-            // Simulate API call
-            setTimeout(() => {
+            try {
+                // Prepare data for API
+                const waitlistData = {
+                    name: name,
+                    email: email,
+                    creator_type: creatorType,
+                    interested_plan: interestedPlan,
+                    cybersecurity_concerns: securityConcerns || ''
+                };
+
+                // Send data to backend API
+                const response = await fetch('https://waitlist-api.kaguyasecurity.com/api/waitlist', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(waitlistData)
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const result = await response.json();
+                console.log('Waitlist signup successful:', result);
+
                 // Show success message
                 showWaitlistSuccess();
-                
-                // Log waitlist data (in real implementation, send to your backend)
-                console.log('Waitlist signup:', {
-                    name,
-                    email,
-                    creatorType,
-                    interestedPlan,
-                    securityConcerns: formData.get('security-concerns'),
-                    timestamp: new Date().toISOString()
-                });
 
                 // Reset form
                 this.reset();
+
+            } catch (error) {
+                console.error('Error submitting waitlist form:', error);
+                showNotification('Sorry, there was an error joining the waitlist. Please try again later.', 'error');
+            } finally {
+                // Reset button state
                 submitBtn.innerHTML = originalText;
                 submitBtn.disabled = false;
-            }, 2000);
+            }
         });
     }
 
@@ -378,7 +507,7 @@ document.addEventListener('DOMContentLoaded', function() {
     function showWaitlistSuccess() {
         const waitlistForm = document.querySelector('.waitlist-form');
         const originalContent = waitlistForm.innerHTML;
-        
+
         waitlistForm.innerHTML = `
             <div class="waitlist-success">
                 <i class="fas fa-check-circle"></i>
@@ -408,7 +537,7 @@ document.addEventListener('DOMContentLoaded', function() {
             card.addEventListener('mouseenter', () => {
                 tipLink.style.transform = 'translateX(5px)';
             });
-            
+
             card.addEventListener('mouseleave', () => {
                 tipLink.style.transform = 'translateX(0)';
             });
@@ -418,7 +547,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Smooth scroll for tip links (placeholder functionality)
     const tipLinks = document.querySelectorAll('.tip-link');
     tipLinks.forEach(link => {
-        link.addEventListener('click', function(e) {
+        link.addEventListener('click', function (e) {
             e.preventDefault();
             showNotification('Blog posts coming soon! Stay tuned for detailed security guides.', 'info');
         });
@@ -431,7 +560,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const photo = member.querySelector('.member-photo');
             photo.style.transform = 'scale(1.1) rotate(5deg)';
         });
-        
+
         member.addEventListener('mouseleave', () => {
             const photo = member.querySelector('.member-photo');
             photo.style.transform = 'scale(1) rotate(0deg)';
@@ -449,10 +578,10 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 // Performance optimization
-window.addEventListener('load', function() {
+window.addEventListener('load', function () {
     // Remove loading class if it exists
     document.body.classList.remove('loading');
-    
+
     // Initialize any heavy operations after page load
     setTimeout(() => {
         // Additional optimizations can go here
@@ -461,7 +590,7 @@ window.addEventListener('load', function() {
 });
 
 // Error handling
-window.addEventListener('error', function(e) {
+window.addEventListener('error', function (e) {
     console.error('An error occurred:', e.error);
 });
 
