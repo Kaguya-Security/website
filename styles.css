@@ -1051,6 +1051,101 @@ body {
     margin-bottom: 0;
 }
 
+/* Notification System */
+.notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    max-width: 400px;
+    padding: 0;
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    z-index: 10000;
+    transform: translateX(450px);
+    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    opacity: 0;
+}
+
+.notification.show {
+    transform: translateX(0);
+    opacity: 1;
+}
+
+.notification-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 20px;
+    border-radius: 8px;
+}
+
+.notification-message {
+    flex: 1;
+    font-size: 0.95rem;
+    font-weight: 500;
+    line-height: 1.4;
+}
+
+.notification-close {
+    background: none;
+    border: none;
+    padding: 4px;
+    margin-left: 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    opacity: 0.7;
+    font-size: 0.9rem;
+}
+
+.notification-close:hover {
+    opacity: 1;
+    transform: scale(1.1);
+}
+
+/* Notification Types */
+.notification-error .notification-content {
+    background: linear-gradient(135deg, #ef4444, #dc2626);
+    color: white;
+}
+
+.notification-success .notification-content {
+    background: linear-gradient(135deg, #22c55e, #16a34a);
+    color: white;
+}
+
+.notification-info .notification-content {
+    background: linear-gradient(135deg, #3b82f6, #2563eb);
+    color: white;
+}
+
+.notification-warning .notification-content {
+    background: linear-gradient(135deg, #f59e0b, #d97706);
+    color: white;
+}
+
+/* Mobile Responsiveness for Notifications */
+@media (max-width: 768px) {
+    .notification {
+        right: 15px;
+        left: 15px;
+        max-width: none;
+        transform: translateY(-100px);
+    }
+    
+    .notification.show {
+        transform: translateY(0);
+    }
+    
+    .notification-content {
+        padding: 14px 16px;
+    }
+    
+    .notification-message {
+        font-size: 0.9rem;
+    }
+}
+
 /* Waitlist Success State */
 .waitlist-success {
     text-align: center;
