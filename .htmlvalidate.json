@@ -3,10 +3,10 @@
         "html-validate:recommended"
     ],
     "rules": {
-        "void-style": "omit",
+        "void-style": "off",
         "no-trailing-whitespace": "error",
-        "attribute-boolean-style": "omit",
-        "doctype-style": "html5"
+        "attribute-boolean-style": "off",
+        "doctype-style": "off"
     },
     "elements": [
         "html5"
