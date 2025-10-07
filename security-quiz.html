@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
+
     <!-- Primary Meta Tags -->
     <title>Security Assessment Quiz - Kaguya Security</title>
     <meta name="title" content="Security Assessment Quiz - Kaguya Security">
@@ -12,18 +12,18 @@
     <meta name="robots" content="index, follow">
     <meta name="language" content="English">
     <meta name="author" content="Kaguya Security">
-    
+
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://kaguyasecurity.com/security-quiz.html">
     <meta property="og:title" content="Free Security Assessment Quiz - Kaguya Security">
     <meta property="og:description" content="Discover your security vulnerabilities and get personalized recommendations to protect your creator brand.">
     <meta property="og:image" content="https://kaguyasecurity.com/assets/quiz-og-image.jpg">
-    
+
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="favicon.ico">
     <link rel="manifest" href="site.webmanifest">
-    
+
     <!-- Stylesheets -->
     <link rel="stylesheet" href="styles.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -61,7 +61,7 @@
                 </div>
                 <h1>Creator Security Assessment</h1>
                 <p class="quiz-subtitle">Discover your security vulnerabilities and get personalized recommendations to protect your brand</p>
-                
+
                 <div class="quiz-stats">
                     <div class="stat-item">
                         <span class="stat-number">15</span>
@@ -87,11 +87,11 @@
                     </ul>
                 </div>
 
-                <button id="start-quiz" class="btn btn-primary quiz-start-btn">
+                <button type="button" id="start-quiz" class="btn btn-primary quiz-start-btn">
                     <i class="fas fa-play"></i>
                     Start Security Assessment
                 </button>
-                
+
                 <p class="quiz-privacy">No email required • Your answers are private • Results generated instantly</p>
             </div>
         </div>
@@ -105,7 +105,7 @@
                     </div>
                     <span id="progress-text">Question 1 of 15</span>
                 </div>
-                <button id="quiz-exit" class="quiz-exit-btn" title="Exit Quiz">
+                <button type="button" id="quiz-exit" class="quiz-exit-btn" title="Exit Quiz" aria-label="Exit Quiz">
                     <i class="fas fa-times"></i>
                 </button>
             </div>
@@ -114,13 +114,13 @@
                 <div id="question-container" class="question-container">
                     <!-- Questions will be dynamically loaded here -->
                 </div>
-                
+
                 <div class="quiz-navigation">
-                    <button id="prev-btn" class="btn btn-secondary" disabled>
+                    <button type="button" id="prev-btn" class="btn btn-secondary" disabled>
                         <i class="fas fa-arrow-left"></i>
                         Previous
                     </button>
-                    <button id="next-btn" class="btn btn-primary" disabled>
+                    <button type="button" id="next-btn" class="btn btn-primary" disabled>
                         Next
                         <i class="fas fa-arrow-right"></i>
                     </button>
@@ -165,8 +165,8 @@
 
                 <div class="results-actions">
                     <a href="index.html#waitlist" class="btn btn-primary">Join Waitlist</a>
-                    <button id="retake-quiz" class="btn btn-secondary">Retake Assessment</button>
-                    <button id="share-results" class="btn btn-outline">Share Results</button>
+                    <button type="button" id="retake-quiz" class="btn btn-secondary">Retake Assessment</button>
+                    <button type="button" id="share-results" class="btn btn-outline">Share Results</button>
                 </div>
             </div>
         </div>
