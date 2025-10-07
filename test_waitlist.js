@@ -69,7 +69,6 @@ async function runTests() {
         console.log('  Response (not JSON):', responseBody);
       }
 
-
       if (response.ok && testCase.expectSuccess) {
         console.log('  Result: PASSED');
       } else if (!response.ok && !testCase.expectSuccess) {
